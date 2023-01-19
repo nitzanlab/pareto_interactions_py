@@ -337,24 +337,27 @@ def plot_task_phys(X_task, X_spatial, comp_null=False, nbin=10, r=2, n_shuff=100
             df_null = pd.DataFrame({'task dist': task_dist, 'phys dist': phys_dist_perm})
             corr_null_list.append(np.corrcoef(df_null['task dist'], df_null['phys dist'])[0,1])
 
+        pval = (corr <= corr_null_list).mean()
+        
+        print('pval: %.05f' % pval)
 
     # plot dist correlation plot
     p = plot_task_phys_bins(df_stats)
 
-    if comp_null:
-        pl_corr = plot_corr_null(corr, corr_null_list)
+    # if comp_null:
+    #     pl_corr = plot_corr_null(corr, corr_null_list)
 
-        if vconcat:
-            p = alt.vconcat(p, pl_corr, title=tit, center=True).resolve_scale(size='independent')
-        else:
-            p = alt.hconcat(p, pl_corr, title=tit, center=True).resolve_scale(size='independent')
+    #     if vconcat:
+    #         p = alt.vconcat(p, pl_corr, title=tit, center=True).resolve_scale(size='independent')
+    #     else:
+    #         p = alt.hconcat(p, pl_corr, title=tit, center=True).resolve_scale(size='independent')
 
         # pls_corr.append(pl_corr)
-        pval = (corr <= corr_null_list).mean()
+        # pval = (corr <= corr_null_list).mean()
         #     pvals[data] = (corr, pval)
         # pl_corr.save(f'../output/pairs_dist_{data}_corr_{desc}.png', scale_factor=5)
 
-        print('pval: %.05f' % pval)
+        # print('pval: %.05f' % pval)
 
     # TODO: to paper?
     titleFontSize = 30
