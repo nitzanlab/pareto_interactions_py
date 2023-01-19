@@ -303,7 +303,8 @@ def plot_task_phys_bins(df_stats, tit='', add_legend=True, tickCount=5):
                                                                           scale=alt.Scale(range=[0, 1500], domain=[0, 0.1]),
                                                                           legend=legend),
                                                             opacity=alt.value(1))
-    return p
+    
+    return to_paper(p)
 
 
 def plot_task_phys(X_task, X_spatial, comp_null=False, nbin=10, r=2, n_shuff=1000, verbose=True, vconcat=True, tit='', add_legend=True):
