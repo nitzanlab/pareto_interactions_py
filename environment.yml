@@ -22,6 +22,10 @@ dependencies:
   - scikit-learn
   - threadpoolctl
   - pyamg
+  - ipykernel
+  - python-igraph
+  - altair
+  - altair_saver
   - pip # for pip installing tacco and pareto
   - git # for the installation from github
   - pip:
