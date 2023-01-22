@@ -1,22 +1,36 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.spatial.distance import cdist, pdist, squareform
+from scipy.spatial.distance import cdist
 
 epsilon = 1e-8
-D_METRIC = 2 # was running with 2
+D_METRIC = 2
 D_NORM = 2
 D_POWER = 2
 
 def plot_stats(G, D, P, H=None):
-    fig, ax = plt.subplots(1, 2)
-    ax[0].scatter(D.flatten(), P.flatten());
-    ax[0].set_xlabel('Distance D'); ax[0].set_ylabel('performance P');
+    """
+    Plot the stats of the objective
+    :param G: cells' task allocation (cells x tasks)
+    :param D: cells' distance from archetype expression (cells x tasks)
+    :param P: (self) performance of a cell in a task (cells x tasks)
+    :param H: interaction term, neighbors' affect on a cell in task (cells x tasks)
+    """
+    ncols = 2 if H is not None else 1
+    _, ax = plt.subplots(1, ncols, figsize=(5*ncols, 5))
 
+    ax[0].scatter(D.flatten(), P.flatten())
+    ax[0].set_xlabel('distance D') 
+    ax[0].set_ylabel('performance P')
+    ax[0].set_title('Performance in task verses distance from its archetype')
+    
     if H is not None:
-        ax[1].scatter(P.flatten(), H.flatten());
-        ax[1].set_xlabel('performance P'); ax[1].set_ylabel('neighbors weighing H');
+        ax[1].scatter(P.flatten(), H.flatten())
+        ax[1].set_xlabel('performance P') 
+        ax[1].set_ylabel('neighbors weighing H')
+        ax[1].set_title('Neighbor weighing of task verses the cell\'s performance in it')
 
     plt.show()
+
 
 def obj_type(g, n, m, T, a0, grads=None, plot=False, D_metric=D_METRIC, D_power=D_POWER):
     """
@@ -41,121 +55,6 @@ def obj_type(g, n, m, T, a0, grads=None, plot=False, D_metric=D_METRIC, D_power=
     return -np.prod(np.sum(gradP, 0))
 
 
-def obj_neigh_avg_performance(g, n, m, T, a0, N, grads=None, plot=False, D_metric=D_METRIC):
-    """
-    Objective considering neighbors contribution
-
-        F = \prod_taskj \sum_celli Hji Pji
-        Hji = ((a0 - (N @ P)) / a0)
-
-    :param g: flattened G
-    :param n: num cells
-    :param m: num tasks
-    :param T: tasks x tasks - optimal points of tasks
-    :param a0: max performance on tasks
-    :param N: normalized neighbors matrix
-    :return: negative fitness objective
-    """
-    G = g.reshape((n, m))
-    D = cdist(G, T, metric='minkowski', p=D_metric)
-    P = (a0 - D ** 2)  # dist cell to task, dij, cell x task
-    grads = np.ones((n, m)) if grads is None else grads
-    gradP = np.multiply(grads, P) #?
-    H = ((a0 - (N @ gradP)) / a0)  # cell x task
-
-    if plot:
-        plot_stats(G, D, P, H)
-
-    return -np.prod(np.sum(H * gradP, 0))
-    # return -np.prod(np.sum(H * P, 0))
-
-def obj_neigh_avg_arch(g, n, m, T, a0, N, grads=None, plot=False, D_metric=D_METRIC):
-    """
-    Objective considering neighbors contribution
-
-        F = \prod_taskj \sum_celli Hji Pji
-        Hji = ((a0 - P(N @ G)) / a0)
-
-    :param g: flattened G
-    :param n: num cells
-    :param m: num tasks
-    :param T: tasks x tasks - optimal points of tasks
-    :param a0: max performance on tasks
-    :param N: normalized neighbors matrix
-    :return: negative fitness objective
-    """
-    G = g.reshape((n, m))
-    WG = N @ G
-    D = cdist(WG, T, metric='minkowski', p=D_metric)
-    P = a0 - D ** 2  # dist cell to task, dij, cell x task
-    grads = np.ones(n, m) if grads is None else grads
-    gradP = np.multiply(grads, P)  # ?
-    H = ((a0 - (gradP)) / a0)  # cell x task
-
-    if plot:
-        plot_stats(G, D, P, H)
-
-    return -np.prod(np.sum(H * gradP, 0))
-    # return -np.prod(np.sum(H * P, 0))
-
-
-def obj_neigh_avg_performance(g, n, m, T, a0, N, grads=None, plot=False, D_metric=D_METRIC):
-    """
-    Objective considering neighbors contribution
-
-        F = \prod_taskj \sum_celli Hji Pji
-        Hji = ((a0 - (N @ P)) / a0)
-
-    :param g: flattened G
-    :param n: num cells
-    :param m: num tasks
-    :param T: tasks x tasks - optimal points of tasks
-    :param a0: max performance on tasks
-    :param N: normalized neighbors matrix
-    :return: negative fitness objective
-    """
-    G = g.reshape((n, m))
-    D = cdist(G, T, metric='minkowski', p=D_metric)
-    P = (a0 - D ** 2)  # dist cell to task, dij, cell x task
-    grads = np.ones((n, m)) if grads is None else grads
-    gradP = np.multiply(grads, P) #?
-    H = ((a0 - (N @ gradP)) / a0)  # cell x task
-
-    if plot:
-        plot_stats(G, D, P, H)
-
-    return -np.prod(np.sum(H * gradP, 0))
-    # return -np.prod(np.sum(H * P, 0))
-
-
-def obj_neigh_avg_performance01(g, n, m, T, a0, N, beta, plot=False, D_metric=D_METRIC, **kwargs):
-    """
-    Objective considering neighbors contribution
-    :param g: flattened G
-    :param n: num cells
-    :param m: num tasks
-    :param T: tasks x tasks - optimal points of tasks
-    :param a0: max performance on tasks
-    :param N: normalized neighbors matrix
-    :return: negative fitness objective
-    """
-    G = g.reshape((n, m))
-    D = cdist(G, T, metric='minkowski', p=D_metric)
-    P = (a0 - D ** 2) / a0  # dist cell to task, dij, cell x task
-    H = (1 - (N @ P))  # cell x task
-
-    if plot:
-        plot_stats(G, D, P, H)
-
-    return -np.prod(np.sum(H * P, 0))
-
-def plot_h(h):
-    N = np.ones((1, 1))
-    P = np.linspace(0, 1, 50).reshape((1,-1))
-    plt.scatter(P.flatten(), h(N, P).flatten());
-    plt.xlabel('avg performance P');
-    plt.ylabel('neighbors weighing H');
-    plt.show()
 
 def obj_global_local(g, n, m, T, a0, N, beta, grads=None, plot=False, D_norm=D_NORM, D_power=D_POWER,
                      h=None, norm_performance=True):
@@ -181,54 +80,14 @@ def obj_global_local(g, n, m, T, a0, N, beta, grads=None, plot=False, D_norm=D_N
     h = (lambda N,P: (1 - (N @ P))) if h is None else h
     H = h(N, P)
 
-    # h = (lambda N,P: (1 - (N @ P))) if h is None else h
-    # H = h(N, P)
-
-
+    
     if plot:
-        plot_h(h)
         plot_stats(G, D, P, H)
 
     grads = np.ones((n, m)) if grads is None else grads
 
     return -np.prod(np.sum(np.multiply(((1-beta) * grads + beta * H), P), 0))
-
-def obj_miris(g, n, m, T, a0, N, beta, grads=None, plot=False, D_norm=D_NORM, D_power=D_POWER,
-                     h=None, norm_performance=True):
-    """
-    Objective considering neighbors contribution
-    :param g: flattened G
-    :param n: num cells
-    :param m: num tasks
-    :param T: tasks x tasks - optimal points of tasks
-    :param a0: max performance on tasks
-    :param N: normalized neighbors matrix
-    :return: negative fitness objective
-    """
-
-    G = g.reshape((n, m))
-    D = cdist(G, T, metric='minkowski', p=D_norm)
-
-    P = (a0 - D ** D_power) / a0
-
-    h = (lambda N,P: (1 - (N @ P))) if h is None else h
-    H = h(N, P)
-
-    if plot:
-        plot_h(h)
-        plot_stats(G, D, P, H)
-
-    grads = np.ones((n, m)) if grads is None else grads
-
-    return -np.prod(np.sum(np.multiply(((1-beta) * grads + beta * H), P), 0))
-
-
-
-
 
 
 
 obj_neigh_default = obj_global_local
-
-#obj_neigh_avg_performance01
-# obj_neigh_default = obj_neigh_avg_performance01 # obj_global_local

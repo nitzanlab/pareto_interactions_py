@@ -3,7 +3,6 @@ import pandas as pd
 from .objectives import obj_type, obj_neigh_default
 from scipy.optimize import minimize
 from scipy.optimize.optimize import approx_fprime
-# from grispy import GriSPy
 from sklearn.neighbors import kneighbors_graph
 from .shaped_allocations import get_multiple_allocations
 import igraph as ig
@@ -11,6 +10,8 @@ import igraph as ig
 # n - num cells
 # m - num tasks
 # d - num dims
+# T - optimal tasks of archetypes (task x task)
+# G - cells' task allocation (cell x task), (g is the flattened version)
 
 MAXITER = 1000
 epsilon = 1e-16
@@ -20,24 +21,12 @@ epsilon = 1e-16
 def get_ini_rnd(n, m):
     """
     Random initialization of archetypes for n cell, m task components
+    :param n: num cells
+    :param m: num tasks
     """
     g0 = np.random.rand(n, m)  # cell x task
     g0 = (g0.T / np.sum(g0, 1).T).T
     return g0.flatten()
-
-def get_ini_unif(n, m, eps=0):
-    """
-    Uniform initialization of archetypes for n cell, m task with eps noise
-    """
-    g0 = np.ones((n, m))  # cell x task
-    g0 = (g0.T / np.sum(g0, 1)).T
-    g0 += np.random.normal(0, eps, (n, m))
-    if np.any(g0 < 0):
-        print('Negative values in ini. Taking abs value')
-        g0 = np.abs(g0)
-    g0 = (g0.T / np.sum(g0, 1)).T
-    return g0.flatten()
-
 
 
 def cons_sum_to_one(g, n, m):
@@ -131,25 +120,6 @@ def get_neigh_mat_noncyclic(L, n_neigh):
     return N
 
 
-# def get_neigh_mat_cyclic(L, n_neigh):
-#     """
-#     Computes neighbor matrix
-#     :param L: location of each cell (n x d)
-#     :param n_neigh: number of neighbors
-#     :return: cell x cell normalized weight matrix
-#     """
-#     n, d = L.shape
-#     N = np.zeros((n, n))
-#
-#     val = (0, 360)
-#     periodic = {int(i): val for i in np.arange(d)}
-#     gsp = GriSPy(L, periodic=periodic)
-#     near_dist, near_ind = gsp.nearest_neighbors(L, n=n_neigh)
-#     for i, idx in enumerate(near_ind):
-#         N[i, idx] = 1
-#     return N
-
-
 def callback(x, obj, res):
     """
     Retrieve path and gradient from optimization
@@ -162,8 +132,8 @@ def callback(x, obj, res):
 
 def solve_opt(n, m, d, n_neigh, asrange=True, beta=1, is_cyclic=False, get_path=False, g0=None, L=None, N=None, a0=None,
               fgrads=None,
-              obj_neigh=None,
-              test=True, maxiter=MAXITER, plot=False, **kwargs):
+              obj_neigh=None, method='SLSQP', 
+              test=False, verbose=False, maxiter=MAXITER, plot=False, **kwargs):
     """
     Solves optimization
     :param n: number of cells
@@ -187,7 +157,7 @@ def solve_opt(n, m, d, n_neigh, asrange=True, beta=1, is_cyclic=False, get_path=
     L - location of each cell (n x d)
     F - value of objective
     """
-    T = np.eye(m)  # G_i*
+    T = np.eye(m) 
 
     g0 = get_ini_rnd(n, m) if g0 is None else g0.flatten()
 
@@ -205,9 +175,8 @@ def solve_opt(n, m, d, n_neigh, asrange=True, beta=1, is_cyclic=False, get_path=
             N = get_neigh_mat(L, n_neigh=n_neigh, is_cyclic=is_cyclic)
 
 
-    a0_val = 2 # diameter of 2-simplex is 1, and is 2 in 3+-simplex
+    a0_val = 2 
     a0 = a0_val if a0 is None else a0
-    # a0 = np.full((n, m), a0_val) if a0 is None else np.full((n, m), a0)
 
     # constraints
     b = (0.0, 1.0)
@@ -230,19 +199,16 @@ def solve_opt(n, m, d, n_neigh, asrange=True, beta=1, is_cyclic=False, get_path=
     callback(g0, obj, res)
     sol = minimize(obj,
                    g0,
-                   # method='nelder-mead', # slow, doesn't optimize well
-                   method='SLSQP', # fast, returns cells out of bounds, default when unspecified
-                   # method='trust-constr', # slow
+                   method=method, 
                    bounds=bnds,
                    constraints=cons,
-                   options={'maxiter': maxiter},
-                   # callback=lambda x: callback(x, obj, res)
-                   )
+                   options={'maxiter': maxiter})
     g = sol.x
     G = g.reshape((n, m))
     F = obj(sol.x)
 
-    print(sol.message)
+    if verbose:
+        print(sol.message)
 
     if plot:
         if no_neigh:
@@ -253,11 +219,6 @@ def solve_opt(n, m, d, n_neigh, asrange=True, beta=1, is_cyclic=False, get_path=
     if test:
         task_allocations = get_multiple_allocations(n, m, L)
 
-        # G_desc = 'CircumCenter'
-        # G_alt = task_allocations[G_desc]
-        # obj(G_alt.flatten())
-        # obj(G.flatten())
-
         for G_desc, G_alt in task_allocations.items():
             F_alt = obj(G_alt.flatten())
             if F_alt < F:
@@ -266,7 +227,6 @@ def solve_opt(n, m, d, n_neigh, asrange=True, beta=1, is_cyclic=False, get_path=
     # return path
     if get_path:
         res = pd.DataFrame(res)
-        # res['func val'] = res['g'].apply(obj)
 
         # into df
         df_list = []
@@ -284,53 +244,4 @@ def solve_opt(n, m, d, n_neigh, asrange=True, beta=1, is_cyclic=False, get_path=
 
         return G, T, L, obj, df
 
-    # G = (G.T / G.sum(1)).T
     return G, T, L, obj
-
-
-
-def test_solve_opt():
-    # import scanpy as sc
-    import altair as alt
-    from plot_funcs import plot_sol
-    from global_grads import no_grad, linear_grad
-    n = 100  # num of cells
-    m = 3 # num of tasks
-    d = 2  # num of dims
-    n_neigh = 8  # num neigh
-
-    def h_exp_inverse(N, P, rate=1.5):
-        return np.exp(- rate * (N @ P))
-
-    G, T, L, obj = solve_opt(n, m, d, n_neigh, beta=1, test=False, is_cyclic=False, a0=2, h=h_exp_inverse, asrange=True)
-    # print(G.sum(1))
-    # n_neigh = 2
-    # n_2d = 100
-
-    # from sklearn.neighbors import NearestNeighbors
-    #
-    # def get_neigh_mat(L, n_neigh):
-    #     nbrs = NearestNeighbors(n_neighbors=n_neigh + 1, algorithm='ball_tree').fit(L)
-    #     N = nbrs.kneighbors_graph(L).toarray()
-    #     N[np.diag_indices_from(N)] = 0
-    #     sN = (N.T / np.sum(N, 1)).T
-    #     return sN
-    #
-    # # random scatter
-    # L_rand = np.random.random((n, 2)) * 15
-    # N_rand = get_neigh_mat(L_rand, 4 * n_neigh)
-    #
-    # import matplotlib.pyplot as plt
-    # plt.imshow(N_rand)
-    # plt.show()
-    #
-    # G, T, L, obj = solve_opt(n, m, d, n_neigh, L=L_rand, N=N_rand, beta=1, test=False, is_cyclic=False, a0=2)
-
-    alt.renderers.enable('altair_viewer')
-    plot_sol(G, T, L, n_neigh, obj).show()
-
-    pass
-
-if __name__ == '__main__':
-    test_solve_opt()
-

@@ -1,6 +1,6 @@
 # Pareto Interactions (python)
 
-Both this repository and its sister, Mathematica repository [pareto_interactions_m](xx), supplement our preprint: [Emergence of division of labor in tissues through cell interactions and spatial cues](https://www.biorxiv.org/content/10.1101/2022.11.16.516540v1).
+Both this repository and its sister, Mathematica repository [pareto_interactions](https://github.com/miriadler/pareto_interactions), supplement our preprint: [Emergence of division of labor in tissues through cell interactions and spatial cues](https://www.biorxiv.org/content/10.1101/2022.11.16.516540v1).
 
 In our work, we:
 
@@ -11,51 +11,35 @@ mechanisms towards the division of labor within a cell-type population.
 
 3. propose a method to construct ligand-receptor networks between specialist cells and use it to infer division-of-labor mechanisms from single-cell RNA-seq and spatial transcriptomics data of stromal, epithelial, and immune cells.
 
-This repository holds mostly variations of the simulation framework (supp figs 1-3).
+## This repository
+This repository contains:
+
+1. Simulations of Pareto-optimal task and spatial distributions ([Figure S1](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig1.ipynb),[Figure S2](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig2.ipynb),[Figure S3](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig3.ipynb)).
+
+2. Plotting and statistical significance testing of task distances verses physical distances ([Figure 3 C,F,J,M, Figure S4 C](https://github.com/nitzanlab/pareto_interactions_py/notebooks/fig3.ipynb))
+
+3. Analysis of colon fibroblast Slide-seq data (Avraham-Davidi et al.) (Supplementary figure [5](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig5.ipynb)).
+
+4. Projection and analysis of colon fibroblast single-cell RNA-seq expression (Muhl et al.) onto Slide-seq data (Avraham-Davidi et al.) ([Figure 4 E-F](https://github.com/nitzanlab/pareto_interactions_py/notebooks/fig4.ipynb)).
+
+<!-- Mapping and analysis of Slide-seq data projected onto the single-cell data -->
 <!-- , described briefly below.  -->
-In addition, given the spatial and task distances, this repository generates the binned task distances vs physical distances plots (e.g., fig3. C, [example](xx)) and [maps](xx) and [explores](xx) the colon fibroblast single-cell RNA-seq data projection onto the Slide-seq data (fig4. D,f, and supp fig 5).
+<!-- In addition, given the spatial and task distances, this repository generates the binned task distances vs physical distances plots (e.g., fig3. C, [example](xx)) and [maps](xx) and [explores](xx) the colon fibroblast single-cell RNA-seq data projection onto the Slide-seq data (fig4. D,f, and supp fig 5). -->
 
-[Pareto_interactions_m](xx) contains the simulation framework as well (e.g., fig2.B), the data analysis of expression data (e.g., fig3. K) and archetype crosstalk method (e.g., fig4. C).
+[Pareto_interactions](https://github.com/miriadler/pareto_interactions) contains:
 
-<!-- ## Pareto optimality framework with a cell-cell communication mechanism
+1. Mathematica implementation of simulations of Pareto-optimal task and spatial distributions (Figure 2, Figure 3A-B,D-E).
 
-Pareto-opmality theory predicts that the optimal performance of a multitasker cell that faces
-trade-offs (e.g., due to finite resources (Sabi and Tuller 2019; Shoval et al. 2012)) is achieved when
-its expression is bounded inside a polytope whose vertices are expression profiles optimal at each
-task, called archetypes (Shoval et al. 2012; Korem et al. 2015; Hart et al. 2015; Hausser et al. 2019). 
-The Pareto optimality theory was recently extended to consider an ensemble of cells
-that are working as a collective to perform the tissue’s tasks (Adler et al. 2019). 
+2. Task analysis of intestine enterocyte LCM data (Moor et al., Figure 3 H-I)
 
+3. Task analysis of colon fibroblasts Slide-seq data (Avraham-Davidi et al., Figure 3 K-L, Figure S4, S6)
 
-To model the Pareto-optimal expression profiles of cells in a tissue, we consider how cells
-collectively contribute to the tissue by performing several tasks. As was previously presented
-(Shoval et al. 2012; Adler et al. 2019), we model this trade-off by considering that each task is best
-performed at an optimal expression profile, �!
-∗
-, (or an optimal task allocation) and shows a decline
-in performance as cells move further away from �!
-∗ in gene expression space. We define the total
-performance function of a tissue, �, as a product over the performance of all the tasks that need to
-be collectively performed by the cells in the tissue, summing over the contribution of each cell to
-the performance in each task (Adler et al. 2019) (Methods).
-To model the effect of cell-cell interactions on optimal task allocation, we introduce an interaction
-term, �!, which captures how a cell’s performance is influenced by the performance of its
-neighboring cells. We explore the effect of varying the range of the interaction by varying the size
-of the neighborhood of each cell (�#). The contribution of each cell (�) in task � is therefore the
-product of two components; a self-component, �!, which is a function of cell �’s gene expression
-profile (�#), and an interaction component, �!, which is a function of the average �! of the
-neighboring cells of cell � (Figure 2A).
-The interaction term, �!, can generally represent different types of interactions, including positive
-and negative effects on performing the same task. Here, we focus on lateral inhibition, where a
-cell’s performance in task � declines if its neighboring cells exhibit high performance in the same
-task (Figure 2A, Methods). We consider a representative example of a 2D spatial grid of 100 cells
-that need to perform three tasks and compute the expression profiles (or task allocations) of the
-cells that maximize � (Methods). We discuss tissue dimensions, number of tasks, and other types
-of interactions in the supplementary information (SI) (Figure S1-2).
+4. Task analysis of colon fibroblasts single-cell data (Muhl et al. Figure 4 B)
 
+5. Task analysis of lung fibroblasts and macrophages (Adams et al., Figure 5 A,C)
 
-We optimize the collective cellular task performance under trade-offs, we find that distinguishable expression patterns can emerge from cell-cell interactions vs. instructive signals. We propose a method to construct ligand-receptor networks between specialist cells and use it to infer division-of-labor mechanisms from single-cell RNA-seq and spatial transcriptomics data of stromal, epithelial, and immune cells. Our framework can be used to characterize the complexity of cell interactions within tissues.
- -->
+5. Ligand-receptor-based archetype crosstalk networks (Figure 4 A,C, Figure 5 B,D,F, Figure S7, Figure S8)
+
 
 
 ## How to install pareto_interactions_py
