@@ -4,7 +4,7 @@ Both this repository and its sister, Mathematica repository [pareto_interactions
 
 <!-- ![graphical abstract](https://user-images.githubusercontent.com/20613396/227188474-6561dd9a-9bcf-460a-9fd2-0918cc2cff07.jpg) -->
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/20613396/227188474-6561dd9a-9bcf-460a-9fd2-0918cc2cff07.jpg" width="500" height="400">
+  <img src="https://user-images.githubusercontent.com/20613396/227188474-6561dd9a-9bcf-460a-9fd2-0918cc2cff07.jpg" width="470" height="400">
 </p>
 In our work, we:
 
@@ -64,3 +64,10 @@ For install in an already existing environment, use `pip` of the latest release 
 ```
 pip install pareto_interactions_py@git+https://github.com/nitzanlab/pareto_interactions_py.git
 ```
+
+
+## Contact
+
+Feel free to contact us by [mail][email].
+
+[email]: mailto::noa.moriel@mail.huji.ac.il
