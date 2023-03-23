@@ -2,7 +2,8 @@
 
 Both this repository and its sister, Mathematica repository [pareto_interactions](https://github.com/miriadler/pareto_interactions), supplement our [preprint](https://www.biorxiv.org/content/10.1101/2022.11.16.516540v1): Emergence of division of labor in tissues through cell interactions and spatial cues.
 
-![graphical abstract](https://user-images.githubusercontent.com/20613396/227188474-6561dd9a-9bcf-460a-9fd2-0918cc2cff07.jpg)
+<!-- ![graphical abstract](https://user-images.githubusercontent.com/20613396/227188474-6561dd9a-9bcf-460a-9fd2-0918cc2cff07.jpg) -->
+<img src="https://user-images.githubusercontent.com/20613396/227188474-6561dd9a-9bcf-460a-9fd2-0918cc2cff07.jpg" width="200" height="100">
 
 In our work, we:
 
@@ -17,8 +18,6 @@ mechanisms towards the division of labor within a cell-type population.
 
 This repository contains:
 
-![pareto_ex 001](https://user-images.githubusercontent.com/20613396/227187936-b09c08e1-9930-430a-b8bb-f331c067cb7a.jpeg)
-
 1. Simulated optimization of Pareto-optimal task and spatial distributions ([Figure S1](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig1.ipynb),[Figure S2](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig2.ipynb),[Figure S3](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig3.ipynb)).
 
 2. Plotting and statistical significance testing of task distances verses physical distances ([Figure 3 C,F,J,M, Figure S4 C](https://github.com/nitzanlab/pareto_interactions_py/notebooks/fig3.ipynb))
@@ -26,6 +25,9 @@ This repository contains:
 3. Analysis of colon fibroblast Slide-seq data (Avraham-Davidi et al.) (Supplementary figure [5](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig5.ipynb)).
 
 4. Projection and analysis of colon fibroblast single-cell RNA-seq expression (Muhl et al.) onto Slide-seq data (Avraham-Davidi et al.) ([Figure 4 E-F](https://github.com/nitzanlab/pareto_interactions_py/notebooks/fig4.ipynb)).
+
+
+![pareto_ex 001](https://user-images.githubusercontent.com/20613396/227187936-b09c08e1-9930-430a-b8bb-f331c067cb7a.jpeg)
 
 <!-- Mapping and analysis of Slide-seq data projected onto the single-cell data -->
 <!-- , described briefly below.  -->
