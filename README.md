@@ -70,4 +70,4 @@ pip install pareto_interactions_py@git+https://github.com/nitzanlab/pareto_inter
 
 Feel free to contact us by [mail][email].
 
-[email]: mailto::noa.moriel@mail.huji.ac.il
+[email]: mailto:noa.moriel@mail.huji.ac.il
