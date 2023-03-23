@@ -34,7 +34,7 @@ This repository contains:
 <!-- , described briefly below.  -->
 <!-- In addition, given the spatial and task distances, this repository generates the binned task distances vs physical distances plots (e.g., fig3. C, [example](xx)) and [maps](xx) and [explores](xx) the colon fibroblast single-cell RNA-seq data projection onto the Slide-seq data (fig4. D,f, and supp fig 5). -->
 
-[Pareto_interactions](https://github.com/miriadler/pareto_interactions) contains:
+<!-- [Pareto_interactions](https://github.com/miriadler/pareto_interactions) contains:
 
 1. Mathematica implementation of simulations of Pareto-optimal task and spatial distributions (Figure 2, Figure 3A-B,D-E).
 
@@ -46,7 +46,7 @@ This repository contains:
 
 5. Task analysis of lung fibroblasts and macrophages (Adams et al., Figure 5 A,C)
 
-5. Ligand-receptor-based archetype crosstalk networks (Figure 4 A,C, Figure 5 B,D,F, Figure S7, Figure S8)
+5. Ligand-receptor-based archetype crosstalk networks (Figure 4 A,C, Figure 5 B,D,F, Figure S7, Figure S8) -->
 
 
 
