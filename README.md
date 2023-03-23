@@ -1,6 +1,8 @@
 # Pareto Interactions (python)
 
-Both this repository and its sister, Mathematica repository [pareto_interactions](https://github.com/miriadler/pareto_interactions), supplement our preprint: [Emergence of division of labor in tissues through cell interactions and spatial cues](https://www.biorxiv.org/content/10.1101/2022.11.16.516540v1).
+Both this repository and its sister, Mathematica repository [pareto_interactions](https://github.com/miriadler/pareto_interactions), supplement our [preprint](https://www.biorxiv.org/content/10.1101/2022.11.16.516540v1): Emergence of division of labor in tissues through cell interactions and spatial cues.
+
+![graphical abstract](https://user-images.githubusercontent.com/20613396/227188474-6561dd9a-9bcf-460a-9fd2-0918cc2cff07.jpg)
 
 In our work, we:
 
@@ -12,9 +14,12 @@ mechanisms towards the division of labor within a cell-type population.
 3. propose a method to construct ligand-receptor networks between specialist cells and use it to infer division-of-labor mechanisms from single-cell RNA-seq and spatial transcriptomics data of stromal, epithelial, and immune cells.
 
 ## This repository
+
 This repository contains:
 
-1. Simulations of Pareto-optimal task and spatial distributions ([Figure S1](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig1.ipynb),[Figure S2](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig2.ipynb),[Figure S3](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig3.ipynb)).
+![pareto_ex 001](https://user-images.githubusercontent.com/20613396/227187936-b09c08e1-9930-430a-b8bb-f331c067cb7a.jpeg)
+
+1. Simulated optimization of Pareto-optimal task and spatial distributions ([Figure S1](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig1.ipynb),[Figure S2](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig2.ipynb),[Figure S3](https://github.com/nitzanlab/pareto_interactions_py/notebooks/sfig3.ipynb)).
 
 2. Plotting and statistical significance testing of task distances verses physical distances ([Figure 3 C,F,J,M, Figure S4 C](https://github.com/nitzanlab/pareto_interactions_py/notebooks/fig3.ipynb))
 
