@@ -3,7 +3,7 @@
 Both this repository and its sister, Mathematica repository [pareto_interactions](https://github.com/miriadler/pareto_interactions), supplement our [preprint](https://www.biorxiv.org/content/10.1101/2022.11.16.516540v1): Emergence of division of labor in tissues through cell interactions and spatial cues.
 
 <!-- ![graphical abstract](https://user-images.githubusercontent.com/20613396/227188474-6561dd9a-9bcf-460a-9fd2-0918cc2cff07.jpg) -->
-<img src="https://user-images.githubusercontent.com/20613396/227188474-6561dd9a-9bcf-460a-9fd2-0918cc2cff07.jpg" width="700" height="400">
+<img src="https://user-images.githubusercontent.com/20613396/227188474-6561dd9a-9bcf-460a-9fd2-0918cc2cff07.jpg" width="500" height="400">
 
 In our work, we:
 
